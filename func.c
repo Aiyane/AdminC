@@ -35,42 +35,46 @@ void initStand()
     standList[0].select = 1;
     stand = standList[0];
     if ((access(name, F_OK)) == -1)
-    {  // 如果文件不存在
+    { // 如果文件不存在
         in = fopen(name, "w");
         fclose(in);
     }
-    in = fopen(name, "r");
-    int i = 0, j = 0;
-    int num;
-    int money;
-    char *password = (char *)malloc(100 * sizeof(char));
-    char chr;
-    User a;
-    while ((chr = fgetc(in)) != EOF)
+    else
     {
-        num = (int)chr;
-        fgetc(in);
-        money = (int)fgetc(in);
-        fgetc(in);
-        chr = fgetc(in);
-        while (chr != 10)
+        in = fopen(name, "r");
+        MONEY = (int)fgetc(in);
+        int i = 0, j = 0;
+        int num;
+        int money;
+        char *password = (char *)malloc(100 * sizeof(char));
+        char chr;
+        User a;
+        while ((chr = fgetc(in)) != EOF)
         {
-            password[i] = chr;
-            i++;
+            num = (int)chr;
+            fgetc(in);
+            money = (int)fgetc(in);
+            fgetc(in);
             chr = fgetc(in);
+            while (chr != 10)
+            {
+                password[i] = chr;
+                i++;
+                chr = fgetc(in);
+            }
+            i = 0;
+            a.num = num;
+            a.money = money;
+            a.password = password;
+            a.time = 0;
+            a.ifStart = 0;
+            a.charge = 0;
+            a.endTime = 0;
+            userList[j] = a;
+            j++;
         }
-        i = 0;
-        a.num = num;
-        a.money = money;
-        a.password = password;
-        a.time = 0;
-        a.ifStart = 0;
-        a.charge = 0;
-        a.endTime = 0;
-        userList[j] = a;
-        j++;
+        fclose(in);
     }
-    fclose(in);
 }
 
 /*
@@ -389,6 +393,7 @@ int shuttle()
         return -1;
         fclose(file);
     }
+    fputc(MONEY, file);
     for (int i = 0; i < 99; i++)
     {
         if (userList[i].num)
