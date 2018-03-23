@@ -18,5 +18,6 @@ int checkUserMoney();     // 声明查看用户消费记录函数
 int delStand();           // 声明删除标准函数
 void showStand();         // 声明显示标准函数
 int inputNum(char *num1); // 声明输入数字函数
+int shutdown();          // 声明退出系统
 
 #endif

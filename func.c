@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <time.h>
 #include <string.h>
+#include <stdlib.h>
+#include <unistd.h>
 #include "include/model.h"
 #include "include/func.h"
 
@@ -27,9 +29,48 @@ int now()
 */
 void initStand()
 {
+    FILE *in;
+    char name[10] = ".temp.txt";
     standList[0].num = 10;
     standList[0].select = 1;
     stand = standList[0];
+    if ((access(name, F_OK)) == -1)
+    {  // 如果文件不存在
+        in = fopen(name, "w");
+        fclose(in);
+    }
+    in = fopen(name, "r");
+    int i = 0, j = 0;
+    int num;
+    int money;
+    char *password = (char *)malloc(100 * sizeof(char));
+    char chr;
+    User a;
+    while ((chr = fgetc(in)) != EOF)
+    {
+        num = (int)chr;
+        fgetc(in);
+        money = (int)fgetc(in);
+        fgetc(in);
+        chr = fgetc(in);
+        while (chr != 10)
+        {
+            password[i] = chr;
+            i++;
+            chr = fgetc(in);
+        }
+        i = 0;
+        a.num = num;
+        a.money = money;
+        a.password = password;
+        a.time = 0;
+        a.ifStart = 0;
+        a.charge = 0;
+        a.endTime = 0;
+        userList[j] = a;
+        j++;
+    }
+    fclose(in);
 }
 
 /*
@@ -326,5 +367,44 @@ int standDel(int num)
         printf("\n没有该标准\n");
         printf("=================\n\n");
     }
+    return 0;
+}
+
+int shuttle()
+{
+    int i = 0;
+    while (userList[i].num)
+    {
+        if (userList[i].ifStart)
+        {
+            endLogin(&userList[i]);
+        }
+        i++;
+    }
+    FILE *file;
+    char a[10] = ".temp.txt";
+    if ((file = fopen(a, "w")) == NULL)
+    {
+        printf("写入用户数据失败, 不能正确关闭!");
+        return -1;
+        fclose(file);
+    }
+    for (int i = 0; i < 99; i++)
+    {
+        if (userList[i].num)
+        {
+            fputc(userList[i].num, file);
+            fputs(":", file);
+            fputc(userList[i].money, file);
+            fputs(":", file);
+            fputs(userList[i].password, file);
+            fputs("\n", file);
+        }
+        else
+        {
+            break;
+        }
+    }
+    fclose(file);
     return 0;
 }

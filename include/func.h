@@ -18,5 +18,6 @@ void changeStand(int num);          // 改变标准
 void moneyCheck();                  // 检查总营业额
 void userMoney(int num);            // 检查用户消费金额
 int standDel(int num);              // 删除标准
+int shuttle();                     // 退出系统
 
 #endif

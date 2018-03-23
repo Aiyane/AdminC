@@ -21,6 +21,9 @@ int main()
             Selection = inputNum(num1);
             if (Selection == -2 || Selection == 0)
             {
+                if(shutdown() == -1){
+                    continue;
+                } 
                 printf("\n再见!\n");
                 printf("=====\n\n");
                 return 0;
