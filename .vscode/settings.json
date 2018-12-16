@@ -1,6 +1,7 @@
 {
     "files.associations": {
-        "menu.h": "c"
+        "menu.h": "c",
+        "func.h": "c"
     },
     "C_Cpp.errorSquiggles": "Enabled"
 }

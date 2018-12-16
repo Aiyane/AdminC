@@ -390,8 +390,8 @@ int shuttle()
     if ((file = fopen(a, "w")) == NULL)
     {
         printf("写入用户数据失败, 不能正确关闭!");
-        return -1;
         fclose(file);
+        return -1;
     }
     fputc(MONEY, file);
     for (int i = 0; i < 99; i++)
